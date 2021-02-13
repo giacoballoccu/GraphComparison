@@ -1,4 +1,4 @@
-# Graph Comparion
+# Graph Comparison
 
 1. [Introduction](#Introduction)
 2. [Project structure](#Project-structure)
