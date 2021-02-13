@@ -100,15 +100,20 @@ class StandardGraph:
                     queue.append(neighbour)
 
         return candidateNodes
-    def max_views_node(self, root):
+    ''' Won't work with wrong type just with numbers
+    '''
+    def node_with_max_value_of_attribute(self, root, parameter):
+        if parameter == 'partner' or parameter == 'mature':
+            print("This function works only with numeric values, try to pass a parameter which is a integer or float")
+            return
         visited, queue = set(), collections.deque([root])
         visited.add(root)
-        maxViewsSoFar = float('-inf')
+        maxValueOfAttribute = float('-inf')
         while queue:
             # Dequeue a node from queue
             node = queue.popleft()
             # print(str(node) + " -> ", end="")
-            maxViewsSoFar = max(maxViewsSoFar, (float)(self.nodes_data[node]['views']))
+            maxValueOfAttribute = max(maxValueOfAttribute, (float)(self.nodes_data[node][parameter]))
 
             # If not visited, mark it as visited, and
             # enqueue it
@@ -117,7 +122,7 @@ class StandardGraph:
                     visited.add(neighbour)
                     queue.append(neighbour)
 
-        return maxViewsSoFar
+        return maxValueOfAttribute
 
     def dfs(self, node, acc, visited={}):
         # Mark the current vertex as visited
