@@ -6,21 +6,6 @@ class StandardGraph:
     adjacency_list = {}
     nodes_data = {}
 
-    def __init__(self, adjacency_list=None, nodes_data=None):
-        """ initializes a graph object
-            If no dictionary or None is given for the parameter,
-            an empty dictionary will be instead used
-        """
-        if (adjacency_list == None):
-            self.adjacency_list = {}
-        else:
-            self.adjacency_list = adjacency_list
-
-        if (nodes_data == None):
-            self.nodes_data = {}
-        else:
-            self.nodes_data = nodes_data
-
     def __init__(self, nodes_csv, edges_csv):
         with open(edges_csv) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
@@ -75,8 +60,8 @@ class StandardGraph:
                     edges.append({vertex, neighbour})
         return edges
 
-    def bfs(self, root, targetNode):
-        matchingCriteriaNodes = []
+    def bfs(self, root, parameter_name, operator, parameter_value):
+        candidateNodes = []
         visited, queue = set(), collections.deque([root])
         visited.add(root)
 
@@ -84,10 +69,29 @@ class StandardGraph:
 
             # Dequeue a node from queue
             node = queue.popleft()
-            print(str(node) + " -> ", end="")
-            if (node == targetNode):
-                print("\nNode " + str(node) + " found!")
-                return
+            #print(str(node) + " -> ", end="")
+            node = str(node)
+            try:
+                if operator == '=':
+                    if self.nodes_data[node][parameter_name] == parameter_value:
+                        candidateNodes.append(node)
+                elif operator == '<':
+                    if self.nodes_data[node][parameter_name] < parameter_value:
+                        candidateNodes.append(node)
+                elif operator == '>':
+                    if self.nodes_data[node][parameter_name] > parameter_value:
+                        candidateNodes.append(node)
+                elif operator == '<>':
+                    if self.nodes_data[node][parameter_name] != parameter_value:
+                        candidateNodes.append(node)
+                elif operator == '>=':
+                    if self.nodes_data[node][parameter_name] >= parameter_value:
+                        candidateNodes.append(node)
+                elif operator == '<=':
+                    if self.nodes_data[node][parameter_name] <= parameter_value:
+                        candidateNodes.append(node)
+            except:
+                print("Node key error")
             # If not visited, mark it as visited, and
             # enqueue it
             for neighbour in self.adjacency_list[node]:
@@ -95,6 +99,7 @@ class StandardGraph:
                     visited.add(neighbour)
                     queue.append(neighbour)
 
+        return candidateNodes
     def max_views_node(self, root):
         visited, queue = set(), collections.deque([root])
         visited.add(root)
