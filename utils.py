@@ -6,5 +6,8 @@ def write_results_csv(path, row):
         writer.writerow(row)
     results.close()
 
-def number_of_workers(self, sc):
-    return sc._jsc.sc().getExecutorMemoryStatus().size()
+def number_of_workers(sc):
+    print("Retriving number of workers")
+    noOfWorkers = sc._jsc.sc().getExecutorMemoryStatus().size()
+    print("Number of workers deployed: " + str(noOfWorkers))
+    return  noOfWorkers
