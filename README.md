@@ -14,7 +14,10 @@ The purpose of this project is to compare a graph class and its method against t
 
 
 ## Implementation
-
+Graph algorithm that you can test with this project:
+- Retriving of the node with the max value of a numeric attribute
+- Retriving of the list of connected component
+- Retriving a list of node that satify a particular query
 ## Initialize project in your machine
 
 ## Table of results
