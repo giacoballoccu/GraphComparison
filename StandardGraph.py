@@ -11,7 +11,7 @@ class StandardGraph:
             csv_reader = csv.reader(csv_file, delimiter=',')
             next(csv_reader, None)  # skip the headers
             for row in csv_reader:
-                self.add_edge((row[0], row[1]))
+                self.addEdge((row[0], row[1]))
         with open(nodes_csv) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             next(csv_reader, None)  # skip the headers
@@ -19,21 +19,22 @@ class StandardGraph:
                 id = row[-1]
                 data = {'id': id, 'days': row[1], 'mature': row[2], 'views': row[3], 'partner': row[4],
                         'long_id': row[0]}
-                self.add_node_data(id, data)
+                self.addNodeData(id, data)
 
     def nodes(self):
         """ returns the vertices of the graph """
         return list(self.adjacency_list.keys())
-
+    def noOfNodes(self):
+        return len(self.adjacency_list.keys())
     def edges(self):
         """ returns the edges of the graph """
-        return self.generate_edges()
+        return self.generateEdges()
 
-    def add_node_data(self, node, data):
+    def addNodeData(self, node, data):
         if node not in self.nodes_data:
             self.nodes_data[node] = data
 
-    def add_edge(self, edge):
+    def addEdge(self, edge):
         """ edge is a tuple of two nodes source and destination
             insert the nodes in the adjacency list key if they are not present and
             add the edge to the adjacency list
@@ -47,7 +48,7 @@ class StandardGraph:
         else:
             self.adjacency_list[vertex1] = [vertex2]
 
-    def generate_edges(self):
+    def generateEdges(self):
         """ A static method generating the edges of the
             graph "graph". Edges are represented as sets
             with one (a loop back to the vertex) or two
@@ -60,7 +61,7 @@ class StandardGraph:
                     edges.append({vertex, neighbour})
         return edges
 
-    def bfs(self, root, parameter_name, operator, parameter_value):
+    def BFSQuery(self, root, attribute_name, operator, attribute_value):
         candidateNodes = []
         visited, queue = set(), collections.deque([root])
         visited.add(root)
@@ -73,22 +74,22 @@ class StandardGraph:
             node = str(node)
             try:
                 if operator == '=':
-                    if self.nodes_data[node][parameter_name] == parameter_value:
+                    if self.nodes_data[node][attribute_name] == attribute_value:
                         candidateNodes.append(node)
                 elif operator == '<':
-                    if self.nodes_data[node][parameter_name] < parameter_value:
+                    if self.nodes_data[node][attribute_name] < attribute_value:
                         candidateNodes.append(node)
                 elif operator == '>':
-                    if self.nodes_data[node][parameter_name] > parameter_value:
+                    if self.nodes_data[node][attribute_name] > attribute_value:
                         candidateNodes.append(node)
                 elif operator == '<>':
-                    if self.nodes_data[node][parameter_name] != parameter_value:
+                    if self.nodes_data[node][attribute_name] != attribute_value:
                         candidateNodes.append(node)
                 elif operator == '>=':
-                    if self.nodes_data[node][parameter_name] >= parameter_value:
+                    if self.nodes_data[node][attribute_name] >= attribute_value:
                         candidateNodes.append(node)
                 elif operator == '<=':
-                    if self.nodes_data[node][parameter_name] <= parameter_value:
+                    if self.nodes_data[node][attribute_name] <= attribute_value:
                         candidateNodes.append(node)
             except:
                 print("Node key error")
@@ -102,9 +103,9 @@ class StandardGraph:
         return candidateNodes
     ''' Won't work with wrong type just with numbers
     '''
-    def node_with_max_value_of_attribute(self, root, parameter):
-        if parameter == 'partner' or parameter == 'mature':
-            print("This function works only with numeric values, try to pass a parameter which is a integer or float")
+    def nodeWithMaxValueOfAttribute(self, root, attribute):
+        if attribute == 'partner' or attribute == 'mature':
+            print("This function works only with numeric values, try to pass a attribute which is a integer or float")
             return
         visited, queue = set(), collections.deque([root])
         visited.add(root)
@@ -113,7 +114,7 @@ class StandardGraph:
             # Dequeue a node from queue
             node = queue.popleft()
             # print(str(node) + " -> ", end="")
-            maxValueOfAttribute = max(maxValueOfAttribute, (float)(self.nodes_data[node][parameter]))
+            maxValueOfAttribute = max(maxValueOfAttribute, (float)(self.nodes_data[node][attribute]))
 
             # If not visited, mark it as visited, and
             # enqueue it
@@ -124,7 +125,7 @@ class StandardGraph:
 
         return maxValueOfAttribute
 
-    def dfs(self, node, acc, visited={}):
+    def DFSHelper(self, node, acc, visited={}):
         # Mark the current vertex as visited
         visited[node] = True
 
@@ -136,7 +137,7 @@ class StandardGraph:
         for neighbour in self.adjacency_list[node]:
             if visited[neighbour] == False:
                 # Update the list
-                acc = self.dfs(neighbour, acc, visited)
+                acc = self.DFSHelper(neighbour, acc, visited)
         return acc
 
     def connectedComponents(self):
@@ -147,5 +148,119 @@ class StandardGraph:
         for node in self.adjacency_list.keys():
             if visited[node] == False:
                 acc = []
-                cc.append(self.dfs(node, acc, visited))
+                cc.append(self.DFSHelper(node, acc, visited))
         return cc
+    '''
+    Get number of triangles in the graph
+    isDirected: boolean that state if the graph is directed or not
+    '''
+    def countTriangle(self, isDirected):
+        count_triangle = 0
+        nodes = self.nodes()
+        # Consider every possible
+        # triplet of edges in graph
+        already_checked_nodes = set()
+
+        for i in nodes:
+            for j in nodes:
+                for k in nodes:
+                    # check the triplet
+                    # if it satisfies the condition
+                    if (i != j and i != k and j != k and
+                        j in self.adjacency_list[i] and
+                        k in self.adjacency_list[j] and
+                        i in self.adjacency_list[k]):
+                        count_triangle += 1
+
+        if isDirected:
+            return count_triangle / 3
+        else:
+            return count_triangle / 6
+
+    def fillOrder(self, v, visited, stack):
+        # Mark the current node as visited
+        visited[v] = True
+        # Recur for all the vertices adjacent to this vertex
+        for i in self.graph[v]:
+            if visited[i] == False:
+                self.fillOrder(i, visited, stack)
+        stack = stack.append(v)
+
+    '''A recursive function that find finds and prints strongly connected 
+        components using DFSHelper traversal 
+        u --> The vertex to be visited next 
+        disc[] --> Stores discovery times of visited vertices 
+        low[] -- >> earliest visited vertex (the vertex with minimum 
+                    discovery time) that can be reached from subtree 
+                    rooted with current vertex 
+         st -- >> To store all the connected ancestors (could be part 
+               of SCC) 
+         stackMember[] --> bit/index array for faster check whether 
+                      a node is in stack 
+        '''
+
+    def SCCHelper(self, node, low, disc, stackMember, st, time=0):
+        # Initialize discovery time and low value
+        disc[node] = time
+        low[node] = time
+        time += 1
+        stackMember[node] = True
+        st.append(node)
+
+        # Go through all vertices adjacent to this
+        for neighbor in self.adjacency_list[node]:
+
+            # If v is not visited yet, then recur for it
+            if disc[neighbor] == -1:
+
+                self.SCCHelper(neighbor, low, disc, stackMember, st, time)
+
+                # Check if the subtree rooted with v has a connection to
+                # one of the ancestors of u
+                # Case 1 (per above discussion on Disc and Low value)
+
+                low[node] = min(low[node], low[neighbor])
+
+            elif stackMember[neighbor] == True:
+
+                '''Update low value of 'u' only if 'v' is still in stack 
+                (i.e. it's a back edge, not cross edge). 
+                Case 2 (per above discussion on Disc and Low value) '''
+                low[node] = min(low[node], disc[neighbor])
+
+                # head node found, pop the stack and print an SCC
+        w = "-1"  # To store stack extracted vertices
+        if low[node] == disc[node]:
+            temp = []
+            while w != node:
+                w = st.pop()
+                temp.append(w)
+                stackMember[w] = False
+
+        return temp
+    '''
+    Implementation of Tarjan's strongly connected components algorithm
+    '''
+    def stronglyConnectedComponents(self):
+
+        # Mark all the vertices as not visited
+        # and Initialize parent and visited,
+        # and ap(articulation point) arrays
+        disc = {}
+        low = {}
+        stackMember = {}
+        for idx, node in enumerate(self.nodes()):
+            disc[node] = -1
+            low[node] = -1
+            stackMember[node] = False
+        st = []
+
+        # Call the recursive helper function
+        # to find articulation points
+        # in DFSHelper tree rooted with vertex 'i'
+        acc = []
+        for node in self.nodes():
+            if disc[node] == -1:
+                acc.append(self.SCCHelper(node, low, disc, stackMember, st, 0))
+
+        return acc
