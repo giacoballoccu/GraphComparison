@@ -31,7 +31,7 @@ class GraphComparison:
 
         print("GraphFrame calculating list of connected components")
         start = time.time()
-        GFcc = self._spark_graph.connectedComponents(algorithm='graphframes')
+        GFcc = self._spark_graph._spark_graph.connectedComponents(algorithm='graphframes')
         end = time.time()
         graph_frame_time = end - start
         print("\n GraphFrame time elapsed to retrive connected components:" + str(graph_frame_time))
@@ -46,7 +46,7 @@ class GraphComparison:
             row = ['NoOfWorkers', 'GraphClass time (s)', 'GraphFrame time (s)']
             utils.write_results_csv(csv_path_name, row)
 
-        startingNode = 1000
+        startingNode = "1000"
 
         print("StandardGraph calculating max value of nodes attribute " + attribute + "...\n")
         start = time.time()
@@ -60,7 +60,7 @@ class GraphComparison:
 
         print("GraphFrame calculating max value of nodes attribute " + attribute + "...\n")
         start = time.time()
-        gf_value = mostPopular = self._spark_graph.vertices.groupBy().max(attribute)
+        gf_value = mostPopular = self._spark_graph._spark_graph.vertices.groupBy().max(attribute)
         end = time.time()
         graph_frame_time = end - start
         print("\n GraphFrame time elapsed to max value of nodes attribute " + attribute + ":" + str(graph_frame_time))

@@ -17,6 +17,7 @@ def main():
     sc = pyspark.SparkContext(conf=conf)
     ss = SparkSession(sc)
     ss._jsc.addJar("Jars/graphframes-0.8.1-spark3.0-s_2.12.jar")
+    sc.setCheckpointDir('checkpoints')
     print(sc._conf.getAll())
 
     standardGraph = StandardGraph("Dataset/twitch/ENGB/musae_ENGB_target.csv", "Dataset/twitch/ENGB/musae_ENGB_edges.csv")
@@ -24,6 +25,7 @@ def main():
     comparator = GraphComparison(ss, standardGraph, sparkGraph)
     query = "views < 1000"
     comparator.compareTimesBFSQuery(query)
-
+    comparator.compareTimesConnectedComponents()
+    comparator.compareTimesMaxAttribute("views")
 if __name__ == "__main__":
     main()
