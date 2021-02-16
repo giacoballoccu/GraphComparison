@@ -1,7 +1,7 @@
-NoOfWorkers,GraphClass time (s),GraphFrame time (s)
+NoOfWorkers,GraphClass time (s),GraphFrame time (s),dataset
 
-2,out of time (over 10 minutes),29.846829891204834
-3,out of time (over 10 minutes),19.2566659450531
-5,out of time (over 10 minutes),19.41680598258972
-6,out of time (over 10 minutes),14.647715330123901
+2,out of time (over 10 minutes),29.846829891204834,ENGB
+3,out of time (over 10 minutes),19.2566659450531,ENGB
+5,out of time (over 10 minutes),19.41680598258972,ENGB
+6,out of time (over 10 minutes),14.647715330123901,ENGB
 4,out of time (over 10 minutes),86.29342651367188,DE
