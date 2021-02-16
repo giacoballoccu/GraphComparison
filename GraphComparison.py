@@ -9,10 +9,11 @@ class GraphComparison:
       standard_graph: normal graph implemented with adjacency lists
       spark_graph: graph created using graphframe
     """
-    def __init__(self, spark_context, standard_graph, spark_graph):
+    def __init__(self, spark_context, standard_graph, spark_graph, dataset_name):
         self._spark_context = spark_context
         self._standard_graph = standard_graph
         self._spark_graph = spark_graph
+        self._dataset_name = dataset_name
 
     '''
     Compares the computational times for calculatin connected component of a graph
@@ -41,7 +42,7 @@ class GraphComparison:
         graph_frame_time = end - start
         print("\n GraphFrame time elapsed to retrive connected components:" + str(graph_frame_time))
 
-        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time])
+        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time, self._dataset_name])
 
     '''
     This method compare the computational times for calculating strongly connected component of a graph between
@@ -70,7 +71,7 @@ class GraphComparison:
         graph_frame_time = end - start
         print("\n GraphFrame time elapsed to retrive strongly connected components:" + str(graph_frame_time))
 
-        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time])
+        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time, self._dataset_name])
 
     '''
     Compares the computational times for calculating the node with the max value of a given attribute
@@ -101,7 +102,7 @@ class GraphComparison:
         graph_frame_time = end - start
         print("\n GraphFrame time elapsed to max value of nodes attribute " + attribute + ":" + str(graph_frame_time))
 
-        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time])
+        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time, self._dataset_name])
 
     '''
     Compares the computational times for retriving a list of nodes that satisfy a particular query and write the results in a csv files
@@ -135,7 +136,7 @@ class GraphComparison:
         graph_frame_time = end - start
         print("StandardGraph time elapsed to retrive list of nodes:" + str(graph_frame_time))
 
-        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time])
+        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time, self._dataset_name])
 
     '''
     Compares the computational times for calculating the number of triangles in the graph and write the results in a csv files 
@@ -148,7 +149,7 @@ class GraphComparison:
 
         print("StandardGraph calculating number of triangles in the graph")
         start = time.time()
-        #SG_no_of_triangles = self._standard_graph.countTriangle(True)
+        SG_no_of_triangles = self._standard_graph.countTriangle(True)
         end = time.time()
         standard_graph_time = end - start
         print("\n StandardGraph time elapsed to retrive the number of triangles in the graph:" + str(standard_graph_time))
@@ -163,4 +164,4 @@ class GraphComparison:
         graph_frame_time = end - start
         print("\n GraphFrame time elapsed to retrive the number of triangles in the graph" + str(graph_frame_time))
 
-        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time])
+        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time, self._dataset_name])
