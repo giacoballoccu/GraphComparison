@@ -8,16 +8,22 @@
 8. [References](#References)
 
 ## Introduction
-The purpose of this project is to compare a graph class and its method against the state of art Pyspark class for graph operations (GraphFrame). Compare the results, in time of execution and show the superiority of parallel computing against not parallelized data structures when dealing with high dimensional data. Also, the project has the purpose of showing the relationship between the number of workers nodes and computation times for graph related problems. The dataset used is the Twitch-Social-Network dataset [1] of Standard university which is composed of 7,126 nodes and 35,324 edges. 
+The purpose of this project is to compare a graph class and its method against the state of art Pyspark class for graph operations (GraphFrame). Compare the results, in time of execution and show the superiority of parallel computing against not parallelized data structures when dealing with high dimensional data. Also, the project has the purpose of showing the relationship between the number of workers nodes and computation times for graph related problems. The dataset used is the Twitch-Social-Network dataset [1] of Standard university. In particular almost all the test are runned with the twitch/ENGB dataset which is composed of 7,126 nodes and 35,324 edges. In addition to these results a stress-test has been done with the twitch/DE dataset which has 153,138 edges and 9498 nodes.
 
 ## Project structure
-
-
+All the tests and experimented were perform on collaboratory with the GraphMethodsComparison.ipynb file before the landing on the aws platform of the project. Starting from that file all the stuff has been divided in 3 main classes:
+- StandardGraph.py: This class is a personal implementation of a graph in Python using adjancency list and an additional hashmap to carry nodes attributes and values.
+- SparkGraph.py: This class is the parallized version of the graph. It has only one attribute which is a spark GraphFrame object. Thanks to the init is possible to construct directly the graph from the target.csv and edges.csv (check their headers and composition to see if you can fit your dataset).
+- GraphComparison.py: This class is the compator for the two graphs. It needs a instance of StandardGraph, one of SparkGraph and the spark context to be initialized. Inside this function there are all the methods to run and compare the following graph methods:
+- Retrive nodes that satisfy a particular query.
+- Retrive the node that has the max value of a given parameter.
+- Retrive connected components.
+- Retrive strongly connected components.
+- Count the number of triangles.
+All of this methods are differently implemented for the StandardGraph (which doesn't need to exploit parallelization) and GraphFrame. The timing of every method execution is recorded in the Results/<Name of the task>.csv file in order to compare them and draw conclusions.
+- Main.py is just a main, it does initializations and runs all the graphComparison methods.
 ## Implementation
-Graph algorithm that you can test with this project:
-- Retriving of the node with the max value of a numeric attribute
-- Retriving of the list of connected component
-- Retriving a list of node that satify a particular query
+
 ## Initialize project in your machine
 0. Download and install Terraform
 1. Download the terraform project from [3] and unzip it
@@ -58,6 +64,7 @@ ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/GraphComparison.pem ubun
 If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.
 10. Execute on the master (one by one):
  ```
+cp Jars/graphframes-0.8.1-spark3.0-s_2.12.jar /opt/spark-3.0.1-bin-hadoop2.7/jars/graphframes-0.8.1-spark3.0-s_2.12.jar
 $HADOOP_HOME/sbin/start-dfs.sh
 $HADOOP_HOME/sbin/start-yarn.sh
 $HADOOP_HOME/sbin/mr-jobhistory-daemon.sh start historyserver
@@ -65,7 +72,6 @@ $SPARK_HOME/sbin/start-master.sh
 hdfs dfs -put /home/ubuntu/dataset/train2.tsv /train2.tsv
 hdfs dfs -put /home/ubuntu/dataset/test2.tsv /test2.tsv
 $SPARK_HOME/sbin/start-slaves.sh spark://s01:7077
-
  ```
 
 11. You are ready to execute GraphComparison! Execute this command on the master
@@ -90,3 +96,4 @@ Sometimes it happen that some iteration takes much more time than the others. Th
 ## References
 \[1\] https://snap.stanford.edu/data/twitch-social-networks.html
 \[2\] https://github.com/conema/spark-terraform
+\[3\] https://github.com/giacoballoccu/spark-terraform
