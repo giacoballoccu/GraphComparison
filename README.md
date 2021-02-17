@@ -34,7 +34,9 @@ Every method used for the standardGraph is a well-known algorithm.
 * countTriangles(): Without matrix trace approach time complexity: O(v^3).
 
 
-Where v # of vertices and e # of edges.
+Where v # of vertices and e # of edges.  
+
+
 The methods of the SparkGraph are the ones present in the GraphFrame python library. You can have more information about the methods used in this project and many more in the GraphFrame documentation: https://graphframes.github.io/graphframes/docs/_site/user-guide.html
 
 Regarding the AWS setup, it has been done using Terraform and using a good project from a friend and colleague that you can find at [2]. With some tweaks in the parameters and following the guideline is possible to land to terraform safely.
