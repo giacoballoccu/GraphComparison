@@ -12,16 +12,19 @@ The purpose of this project is to compare a graph class and its method against t
 
 ## Project structure
 All the tests and experimented were perform on collaboratory with the GraphMethodsComparison.ipynb file before the landing on the aws platform of the project. Starting from that file all the stuff has been divided in 3 main classes:
-- StandardGraph.py: This class is a personal implementation of a graph in Python using adjancency list and an additional hashmap to carry nodes attributes and values.
-- SparkGraph.py: This class is the parallized version of the graph. It has only one attribute which is a spark GraphFrame object. Thanks to the init is possible to construct directly the graph from the target.csv and edges.csv (check their headers and composition to see if you can fit your dataset).
-- GraphComparison.py: This class is the compator for the two graphs. It needs a instance of StandardGraph, one of SparkGraph and the spark context to be initialized. Inside this function there are all the methods to run and compare the following graph methods:
-- Retrive nodes that satisfy a particular query.
-- Retrive the node that has the max value of a given parameter.
-- Retrive connected components.
-- Retrive strongly connected components.
-- Count the number of triangles.
+* StandardGraph.py: This class is a personal implementation of a graph in Python using adjancency list and an additional hashmap to carry nodes attributes and values.
+* SparkGraph.py: This class is the parallized version of the graph. It has only one attribute which is a spark GraphFrame object. Thanks to the init is possible to construct directly the graph from the target.csv and edges.csv (check their headers and composition to see if you can fit your dataset).
+* GraphComparison.py: This class is the compator for the two graphs. It needs a instance of StandardGraph, one of SparkGraph and the spark context to be initialized. Inside this function there are all the methods to run and compare the following graph methods:
+  * Retrive nodes that satisfy a particular query.
+  * Retrive the node that has the max value of a given parameter.
+  * Retrive connected components.
+  * Retrive strongly connected components.
+  * Count the number of triangles.  
+
 All of this methods are differently implemented for the StandardGraph (which doesn't need to exploit parallelization) and GraphFrame. The timing of every method execution is recorded in the Results/<Name of the task>.csv file in order to compare them and draw conclusions.
-- Main.py is just a main, it does initializations and runs all the graphComparison methods.
+
+* Main.py is just a main, it does initializations and runs all the graphComparison methods.  
+
 ## Implementation
 
 ## Initialize project in your machine
@@ -39,17 +42,16 @@ amz_key_path="GraphComparison.pem"
 **Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on region "us-east-1", with 1 namenode, 3 datanode and with an instance type of t2.medium.
 
 3. Download the files from this repository
-4. Put the files of this repository into the "app" terraform project folder (e.g. example.py should be in spark-terraform-master/app/example.py and so on for all the other files)
-5. Create a zip archive of the TransEmodule folder and put it on spark-terraform-master/app/TransEmodule.zip
-6. Open a terminal and generate a new ssh-key
+4. Put the files of this repository into the "app" terraform project folder (e.g. example.py should be in spark-terraform-master/app/main.py and so on for all the other files)
+5. Open a terminal and generate a new ssh-key
 ```
 ssh-keygen -f <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/localkey
 ```
 Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ folder (e.g. /home/user/)
 
-7. Login to AWS and create a key pairs named **GraphComparison** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.
+6. Login to AWS and create a key pairs named **GraphComparison** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.
 
-8. Open a terminal and go to the spark-terraform-master/ folder, execute the command
+7. Open a terminal and go to the spark-terraform-master/ folder, execute the command
  ```
  terraform init
  terraform apply
@@ -57,12 +59,12 @@ Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ fo
  After a while (wait!) it should print some public DNS in a green color, these are the public dns of your instances.
  It can happen that the command doesn't work (with an error like "Connection timeout"), usually it can be solved by doing a `terraform destroy` and re-do the `terraform apply`.
 
-9. Connect via ssh to all your instances via
+8. Connect via ssh to all your instances via
  ```
 ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/GraphComparison.pem ubuntu@<PUBLIC DNS>
  ```
 If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.
-10. Execute on the master (one by one):
+9. Connect to the master and execute (one by one):
  ```
 cp Jars/graphframes-0.8.1-spark3.0-s_2.12.jar /opt/spark-3.0.1-bin-hadoop2.7/jars/graphframes-0.8.1-spark3.0-s_2.12.jar
 $HADOOP_HOME/sbin/start-dfs.sh
@@ -74,10 +76,11 @@ hdfs dfs -put /home/ubuntu/dataset/test2.tsv /test2.tsv
 $SPARK_HOME/sbin/start-slaves.sh spark://s01:7077
  ```
 
-11. You are ready to execute GraphComparison! Execute this command on the master
+10. You are ready to execute GraphComparison! Execute this command on the master
 ```
 /opt/spark-3.0.1-bin-hadoop2.7/bin/spark-submit --master spark://s01:7077  --executor-cores 2 --executor-memory 2g main.py
 ```
+10a. Common error in this phase
 Based on what machine you chose you will be able to change the number of cores used and the amount of ram memory allocated for the tasks. If you would like to use a dataset different from the ENGB pay attention from the output of this command; if you get this warn message:
 ```
 WARN scheduler.TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
