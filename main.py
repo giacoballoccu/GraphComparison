@@ -27,7 +27,7 @@ def main():
     standardGraph = StandardGraph(nodes_path, edge_path)
     sparkGraph =  SparkGraph(ss, nodes_path, edge_path)
     comparator = GraphComparison(ss, standardGraph, sparkGraph, dataset_name)
-    query = "id = 6780"
+    query = "views < 1000"
 
     comparator.compareTimesBFSQuery(query)
     comparator.compareTimesConnectedComponents()
