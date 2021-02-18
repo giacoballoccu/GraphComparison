@@ -8,8 +8,8 @@ from SparkGraph import *
 from GraphComparison import *
 
 def main():
-    os.environ["JAVA_HOME"] = "/Library/Java/JavaVirtualMachines/openjdk-13.0.2.jdk/Contents/Home"
-    os.environ["SPARK_HOME"] = "spark-3.0.1-bin-hadoop3.2"
+    #os.environ["JAVA_HOME"] = "/Library/Java/JavaVirtualMachines/openjdk-13.0.2.jdk/Contents/Home"
+    #os.environ["SPARK_HOME"] = "spark-3.0.1-bin-hadoop3.2"
     edge_path = "Dataset/twitch/DE/musae_DE_edges.csv"
     nodes_path = "Dataset/twitch/DE/musae_DE_target.csv"
     dataset_name = edge_path.split("/")[2]
@@ -30,9 +30,9 @@ def main():
     query = "id = 6780"
 
     comparator.compareTimesBFSQuery(query)
-    #comparator.compareTimesConnectedComponents()
-    #comparator.compareTimesMaxAttribute("views")
-    #comparator.compareTimesStronglyConnectedCompontents()
-    #comparator.compareTimesCountTriangle()
+    comparator.compareTimesConnectedComponents()
+    comparator.compareTimesMaxAttribute("views")
+    comparator.compareTimesStronglyConnectedCompontents()
+    comparator.compareTimesCountTriangle()
 if __name__ == "__main__":
     main()
