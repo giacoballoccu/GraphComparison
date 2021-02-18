@@ -30,9 +30,9 @@ def main():
     query = "id = 6780"
 
     comparator.compareTimesBFSQuery(query)
-    #comparator.compareTimesConnectedComponents()
-    #comparator.compareTimesMaxAttribute("views")
-    #comparator.compareTimesStronglyConnectedCompontents()
-    #comparator.compareTimesCountTriangle()
+    comparator.compareTimesConnectedComponents()
+    comparator.compareTimesMaxAttribute("views")
+    comparator.compareTimesStronglyConnectedCompontents()
+    comparator.compareTimesCountTriangle()
 if __name__ == "__main__":
     main()
