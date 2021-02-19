@@ -149,7 +149,7 @@ class GraphComparison:
 
         print("StandardGraph calculating number of triangles in the graph")
         start = time.time()
-        SG_no_of_triangles = self._standard_graph.countTriangle(True)
+        #SG_no_of_triangles = self._standard_graph.countTriangle(True)
         end = time.time()
         standard_graph_time = end - start
         print("\n StandardGraph time elapsed to retrive the number of triangles in the graph:" + str(standard_graph_time))
