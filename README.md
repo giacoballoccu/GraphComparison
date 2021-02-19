@@ -152,10 +152,8 @@ Retrieve connected components.
 
 
 Retrieve strongly connected components.
-
 |NoOfWorkers|GraphClass time (s)|GraphFrame time (s)|Dataset|
 |---|---|---|---|
-NoOfWorkers|GraphClass time (s)|GraphFrame time (s)| dataset
 |2|0.017906665802001953|15.816995620727539|ENGB.  |
 |2|0.03655409812927246|96.64561462402344|DE|
 |3|0.018994808197021484|18.190645933151245|ENGB|
