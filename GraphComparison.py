@@ -66,7 +66,7 @@ class GraphComparison:
 
         print("GraphFrame calculating list of connected components")
         start = time.time()
-        GFscc = self._spark_graph._spark_graph.stronglyConnectedComponents(10)
+        GFscc = self._spark_graph._spark_graph.stronglyConnectedComponents(1)
         end = time.time()
         graph_frame_time = end - start
         print("\n GraphFrame time elapsed to retrive strongly connected components:" + str(graph_frame_time))
