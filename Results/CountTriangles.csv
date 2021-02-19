@@ -8,5 +8,4 @@ NoOfWorkers,GraphClass time (s),GraphFrame time (s),dataset
 5,out of time (over 20 minutes),19.41680598258972,ENGB
 5,out of time (over 20 minutes),24.37866497039795,DE
 6,out of time (over 20 minutes),14.647715330123901,ENGB
-6,out of time (over 20 minutes),21.34888982772827,DE
-6,4.76837158203125e-07,15.930915355682373,DE
+6,out of time (over 20 minutes),15.930915355682373,DE
