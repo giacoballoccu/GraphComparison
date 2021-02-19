@@ -86,8 +86,6 @@ $HADOOP_HOME/sbin/start-dfs.sh
 $HADOOP_HOME/sbin/start-yarn.sh
 $HADOOP_HOME/sbin/mr-jobhistory-daemon.sh start historyserver
 $SPARK_HOME/sbin/start-master.sh
-hdfs dfs -put /home/ubuntu/dataset/train2.tsv /train2.tsv
-hdfs dfs -put /home/ubuntu/dataset/test2.tsv /test2.tsv
 $SPARK_HOME/sbin/start-slaves.sh spark://s01:7077
  ```
 
