@@ -5,7 +5,7 @@ import csv
 class StandardGraph:
     adjacency_list = {}
     nodes_data = {}
-
+    ''' Create graph from csv'''
     def __init__(self, nodes_csv, edges_csv):
         with open(edges_csv) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
@@ -22,15 +22,17 @@ class StandardGraph:
                 self.addNodeData(id, data)
 
     def nodes(self):
-        """ returns the vertices of the graph """
+        """ returns the nodes of the graph """
         return list(self.adjacency_list.keys())
     def noOfNodes(self):
+        """ returns the number of nodes in the graph"""
         return len(self.adjacency_list.keys())
     def edges(self):
         """ returns the edges of the graph """
         return self.generateEdges()
 
     def addNodeData(self, node, data):
+        """ add the node attributes associate to him in the hashmap"""
         if node not in self.nodes_data:
             self.nodes_data[node] = data
 
@@ -61,6 +63,13 @@ class StandardGraph:
                     edges.append({vertex, neighbour})
         return edges
 
+    """ Classic implementation of BFS using queque
+        root: id of the node from where the traversal start
+        attribute_name: the name of the attribute you want to query
+        operator: mathematical operator for the query > < <= >= == !=
+        attribute_value: value that you want the attribute to be
+        query -> attribute_name operator attribute_value -> e.g. views > 2000
+    """
     def BFSQuery(self, root, attribute_name, operator, attribute_value):
         candidateNodes = []
         visited, queue = set(), collections.deque([root])
@@ -70,7 +79,6 @@ class StandardGraph:
 
             # Dequeue a node from queue
             node = queue.popleft()
-            #print(str(node) + " -> ", end="")
             node = str(node)
             try:
                 if operator == '=':
@@ -101,7 +109,10 @@ class StandardGraph:
                     queue.append(neighbour)
 
         return candidateNodes
-    ''' Won't work with wrong type just with numbers
+
+    ''' Works only for numeric values, get the node with the max value of a given attribute
+        root: id of the node from where the traversal start
+        attribute: attribute of the node of whom you want to find the max
     '''
     def nodeWithMaxValueOfAttribute(self, root, attribute):
         if attribute == 'partner' or attribute == 'mature':
@@ -125,6 +136,10 @@ class StandardGraph:
 
         return maxValueOfAttribute
 
+    """ Depth first search helper for retriving connecting components
+        acc: stores the nodes explored in a list
+        visited: list of nodes already visit for avoid double couting
+    """
     def DFSHelper(self, node, acc, visited={}):
         # Mark the current vertex as visited
         visited[node] = True
@@ -140,6 +155,9 @@ class StandardGraph:
                 acc = self.DFSHelper(neighbour, acc, visited)
         return acc
 
+    """
+    Get connected components of the graph and return them in a list
+    """
     def connectedComponents(self):
         visited = {}
         cc = []
@@ -177,25 +195,15 @@ class StandardGraph:
         else:
             return count_triangle / 6
 
-    def fillOrder(self, v, visited, stack):
-        # Mark the current node as visited
-        visited[v] = True
-        # Recur for all the vertices adjacent to this vertex
-        for i in self.graph[v]:
-            if visited[i] == False:
-                self.fillOrder(i, visited, stack)
-        stack = stack.append(v)
-
-    '''A recursive function that find finds and prints strongly connected 
+    '''A recursive function that find finds and add them to a list strongly connected 
         components using DFSHelper traversal 
-        u --> The vertex to be visited next 
-        disc[] --> Stores discovery times of visited vertices 
-        low[] -- >> earliest visited vertex (the vertex with minimum 
+        u: The vertex to be visited next 
+        disc: Stores discovery times of visited vertices 
+        low: earliest visited vertex (the vertex with minimum 
                     discovery time) that can be reached from subtree 
                     rooted with current vertex 
-         st -- >> To store all the connected ancestors (could be part 
-               of SCC) 
-         stackMember[] --> bit/index array for faster check whether 
+         st: To store all the connected ancestors 
+         stackMember: index array for faster check whether 
                       a node is in stack 
         '''
 

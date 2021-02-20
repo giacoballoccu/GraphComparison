@@ -16,7 +16,7 @@ class GraphComparison:
         self._dataset_name = dataset_name
 
     '''
-    Compares the computational times for calculatin connected component of a graph
+    Compares the computational times for calculating connected component of a graph
     between the standard graph and the graphframe and write the results in a csv files
     '''
     def compareTimesConnectedComponents(self):
