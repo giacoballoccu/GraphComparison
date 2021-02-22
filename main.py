@@ -32,22 +32,12 @@ def main():
     query = "views < 1000"
     start = '1000'
     end = '6541'
-    #comparator.compareTimesBFSQuery(query)
-    #comparator.compareTimesConnectedComponents()
-    #comparator.compareTimesMaxAttribute("views")
-    #comparator.compareTimesStronglyConnectedCompontents()
-    #comparator.compareTimesCountTriangle()
-    comparator.compareTimesShortestPath(start, end)
-    comparator.compareTimesIndegreeOfGraph()
 
-    edge_path = "Dataset/twitch/ENGB/musae_ENGB_edges.csv"
-    nodes_path = "Dataset/twitch/ENGB/musae_ENGB_target.csv"
-    standardGraph = StandardGraph(nodes_path, edge_path)
-    sparkGraph =  SparkGraph(ss, nodes_path, edge_path)
-    sparkGraph._spark_graph.edges.cache()
-    sparkGraph._spark_graph.vertices.cache()
-    dataset_name = edge_path.split("/")[2]
-    comparator = GraphComparison(ss, standardGraph, sparkGraph, dataset_name)
+    comparator.compareTimesBFSQuery(query)
+    comparator.compareTimesConnectedComponents()
+    comparator.compareTimesMaxAttribute("views")
+    comparator.compareTimesStronglyConnectedCompontents()
+    comparator.compareTimesCountTriangle()
     comparator.compareTimesShortestPath(start, end)
     comparator.compareTimesIndegreeOfGraph()
 

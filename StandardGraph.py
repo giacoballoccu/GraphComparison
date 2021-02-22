@@ -311,6 +311,7 @@ class StandardGraph:
         print("A path between this two nodes doesn't exist")
         return []
 
+    #count number of entering edges for every node
     def calculateInDegrees(self):
         indegree = {}
         for node in self.adjacency_list.keys():

@@ -12,9 +12,11 @@ class SparkGraph:
         nodesSparkDf = spark_session.createDataFrame(nodes_df)
         self._spark_graph = GraphFrame(nodesSparkDf, edgesSparkDf)
 
+    #get shortest path betweem two nodes
     def shortestPath(self, start, end):
         return self._spark_graph.shortestPaths(landmarks=[start, end])
 
+    #Gets the indegree for every node in the graph
     def inDegree(self):
         return self._spark_graph.inDegrees
 
