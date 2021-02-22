@@ -272,3 +272,49 @@ class StandardGraph:
                 acc.append(self.SCCHelper(node, low, disc, stackMember, st, 0))
 
         return acc
+
+
+    def ShortestPath(self, start, goal):
+        visited = []
+
+        # Queue for traversing the graph with bfs fashion
+        queue = [[start]]
+
+        # If the desired node is
+        # reached
+        if start == goal:
+            print("Same Node")
+            return []
+
+        # Loop to traverse the graph
+        while queue:
+            path = queue.pop(0)
+            node = path[-1]
+
+            # Condition to check if the current node is not visited
+            if node not in visited:
+                neighbours = self.adjacency_list[node]
+
+                # Iterate over the neighbours of the node
+                for neighbour in neighbours:
+                    new_path = list(path)
+                    new_path.append(neighbour)
+                    queue.append(new_path)
+
+                    # Condition to check if the neighbour node is the goal
+                    if neighbour == goal:
+                        print("Shortest path = ", *new_path)
+                        return new_path
+                visited.append(node)
+
+        #Doens't exists a path between start and goal
+        print("A path between this two nodes doesn't exist")
+        return []
+
+    def calculateInDegrees(self):
+        indegree = {}
+        for node, neighbors in self.adjacency_list.keys():
+            for neighbor in neighbors:
+                indegree[neighbor] = indegree[neighbor] + 1
+
+        return indegree

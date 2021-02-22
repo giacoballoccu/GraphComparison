@@ -165,3 +165,61 @@ class GraphComparison:
         print("\n GraphFrame time elapsed to retrive the number of triangles in the graph" + str(graph_frame_time))
 
         utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time, self._dataset_name])
+
+    '''
+     Compares the computational times for calculating the indegree of every node in the graph
+     '''
+    def compareTimesIndegreeOfGraph(self):
+        csv_path_name = 'Results/Indegree.csv'
+        if not os.path.isfile(csv_path_name):
+            row = ['NoOfWorkers', 'GraphClass time (s)', 'GraphFrame time (s)', 'Dataset']
+            utils.write_results_csv(csv_path_name, row)
+
+        print("StandardGraph calculating indegree for every node in the graph")
+        start = time.time()
+        dict_indegree = self._standard_graph.calculateInDegrees()
+        end = time.time()
+        standard_graph_time = end - start
+        print("\n StandardGraph time elapsed to retrive the indegree for every node in the graph:" + str(standard_graph_time))
+
+        # get noofworkers from spark context
+        noOfWorkers = utils.number_of_workers(self._spark_context)
+
+        print("GraphFrame calculating indegree for every node in the graph")
+        start = time.time()
+        df_with_indegree = self._spark_graph.inDegree()
+        end = time.time()
+        graph_frame_time = end - start
+        print("\n GraphFrame time elapsed to retrive the indegree for every node in the graph:" + str(graph_frame_time))
+
+        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time, self._dataset_name])
+
+        '''
+        Compares the computational times for calculating the shortest path between a source node and a sink node
+        '''
+
+    def compareTimesShortestPath(self, source, sink):
+        csv_path_name = 'Results/ShortestPath.csv'
+        if not os.path.isfile(csv_path_name):
+            row = ['NoOfWorkers', 'GraphClass time (s)', 'GraphFrame time (s)', 'Dataset']
+            utils.write_results_csv(csv_path_name, row)
+
+        print("StandardGraph calculating shortest path between " + source + " and " + sink + ":")
+        start = time.time()
+        shortest_path = self._standard_graph.ShortestPath(source, sink)
+        end = time.time()
+        standard_graph_time = end - start
+        print("\n StandardGraph time elapsed to retrive the shortest path:" + str(
+            standard_graph_time))
+
+        # get noofworkers from spark context
+        noOfWorkers = utils.number_of_workers(self._spark_context)
+
+        print("GraphFrame  calculating shortest path between " + source + " and " + sink + ":")
+        start = time.time()
+        shortest_path = self._spark_graph.shortestPath(source, sink)
+        end = time.time()
+        graph_frame_time = end - start
+        print("\n GraphFrame time elapsed to retrive the shortest path:" + str(graph_frame_time))
+
+        utils.write_results_csv(csv_path_name, [noOfWorkers, standard_graph_time, graph_frame_time, self._dataset_name])

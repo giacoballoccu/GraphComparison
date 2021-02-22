@@ -11,3 +11,10 @@ class SparkGraph:
         edgesSparkDf = spark_session.createDataFrame(edges_df)
         nodesSparkDf = spark_session.createDataFrame(nodes_df)
         self._spark_graph = GraphFrame(nodesSparkDf, edgesSparkDf)
+
+    def shortestPath(self, start, end):
+        return self._spark_graph.shortestPaths(landmarks=[start, end])
+
+    def inDegree(self):
+        return self._spark_graph.inDegrees()
+

@@ -26,13 +26,18 @@ def main():
     #Initalize the two graphs and the compator
     standardGraph = StandardGraph(nodes_path, edge_path)
     sparkGraph =  SparkGraph(ss, nodes_path, edge_path)
+    sparkGraph._spark_graph.edges.cache()
+    sparkGraph._spark_graph.vertices.cache()
     comparator = GraphComparison(ss, standardGraph, sparkGraph, dataset_name)
     query = "views < 1000"
-
-    comparator.compareTimesBFSQuery(query)
-    comparator.compareTimesConnectedComponents()
-    comparator.compareTimesMaxAttribute("views")
-    comparator.compareTimesStronglyConnectedCompontents()
-    comparator.compareTimesCountTriangle()
+    start = '1000'
+    end = '6541'
+    #comparator.compareTimesBFSQuery(query)
+    #comparator.compareTimesConnectedComponents()
+    #comparator.compareTimesMaxAttribute("views")
+    #comparator.compareTimesStronglyConnectedCompontents()
+    #comparator.compareTimesCountTriangle()
+    comparator.compareTimesShortestPath(start, end)
+    comparator.compareTimesIndegree()
 if __name__ == "__main__":
     main()
