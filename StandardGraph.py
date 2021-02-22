@@ -313,8 +313,12 @@ class StandardGraph:
 
     def calculateInDegrees(self):
         indegree = {}
-        for node, neighbors in self.adjacency_list.keys():
+        for node in self.adjacency_list.keys():
+            neighbors = self.adjacency_list[node]
             for neighbor in neighbors:
-                indegree[neighbor] = indegree[neighbor] + 1
+                if neighbor in indegree:
+                    indegree[neighbor] = indegree[neighbor] + 1
+                else:
+                    indegree[neighbor] = 1
 
         return indegree

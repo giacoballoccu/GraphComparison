@@ -16,5 +16,5 @@ class SparkGraph:
         return self._spark_graph.shortestPaths(landmarks=[start, end])
 
     def inDegree(self):
-        return self._spark_graph.inDegrees()
+        return self._spark_graph.inDegrees
 
