@@ -8,7 +8,7 @@
 8. [References](#References)
 
 ## Introduction
-The purpose of this project is to compare a graph class and its method against the state of art Pyspark class for graph operations (GraphFrame). Compare the results, in time of execution and show the superiority of parallel computing against not parallelized data structures when dealing with high dimensional data. Also, the project has the purpose of showing the relationship between the number of workers nodes and computation times for graph-related problems. The dataset used is the Twitch-Social-Network dataset [1] of Standard university. In particular, almost all the tests are run on the twitch/ENGB dataset which is composed of 7,126 nodes and 35,324 edges. In addition to these results, a stress-test has been done with the twitch/DE dataset which has 153,138 edges and 9498 nodes.
+The purpose of this project is to compare a graph class and its method against the state of art Pyspark class for graph operations (GraphFrame). Compare the results, in time of execution and show the superiority of parallel computing against not parallelized data structures when dealing with high dimensional data. Also, the project has the purpose of showing the relationship between the number of workers nodes and computation times for graph-related problems. The dataset used is the Twitch-Social-Network dataset [1] of Standard university. In particular, almost all the tests are run on the twitch/ENGB dataset which is composed of 7,126 nodes and 35,324 edges. In addition to these results more test has been done with the twitch/DE dataset which has 153,138 edges and 9498 nodes.
 
 ## Project structure
 All the tests and experimented were performed on collaboratory with the GraphMethodsComparison.ipynb file before the landing on the AWS platform of the project. Starting from that file all the stuff has been divided into 3 main classes:
@@ -32,7 +32,8 @@ Every method used for the standardGraph is a well-known algorithm.
 * connectedComponents(): Retrived using a DFS search helper, time complexity: O(v+e)
 * stronglyConnectedComponents(): Tarjan’s Algorithm implementation, time complexity: O(v+e).
 * countTriangles(): Without matrix trace approach time complexity: O(v^3).
-
+* indegree(): Get a map node: indegree for every node in the graph. 
+* shortestPath(): Get the shortest path between two nodes
 
 Where v # of vertices and e # of edges.  
 
@@ -54,7 +55,7 @@ token="<YOUR AWS TOKEN>"
 aws_key_name="GraphComparison"
 amz_key_path="GraphComparison.pem"
 ```
-**Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 3 datanode and with an instance type of t2.medium.
+**Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 6 datanode and with an instance type of m5.xlarge.
 
 3. Download the files from this repository
 4. Put the files of this repository into the "app" terraform project folder (e.g. example.py should be in spark-terraform-master/app/main.py and so on for all the other files)
@@ -91,8 +92,10 @@ $SPARK_HOME/sbin/start-slaves.sh spark://s01:7077
 
 10. You are ready to execute GraphComparison! Execute this command on the master
 ```
-/opt/spark-3.0.1-bin-hadoop2.7/bin/spark-submit --master spark://s01:7077  --executor-cores 2 --executor-memory 2g main.py
+/opt/spark-3.0.2-bin-hadoop2.7/bin/spark-submit --master spark://s01:7077  --executor-cores 4 --executor-memory 14g main.py
 ```
+Note: if you use a machine which has less resources you need to adjust this command parameters.
+
 10a. Common error in this phase.  
 Based on what machine you chose you will be able to change the number of cores used and the amount of RAM allocated for the tasks. If you would like to use a dataset different from the ENGB pay attention to the output of this command; if you get this warn message:
 ```
@@ -180,6 +183,36 @@ Count the number of triangles.
 |5|out of time (over 20 minutes)|24.37866497039795|DE|
 |6|out of time (over 20 minutes)|14.647715330123901|ENGB |
 |6|out of time (over 20 minutes)|15.930915355682373|DE|
+
+Retrive indegree for every node. 
+
+|NoOfWorkers|GraphClass time (s)|GraphFrame time (s)|Dataset|
+|---|---|---|---|
+|2|0.04516458511352539|0.027668787002563477|DE|
+|2|0.03279376029968262|0.007115602493286133|ENGB|
+|3|0.025552749633789062|0.02932000160217285|DE|
+|3|0.04047727584838867|0.0064394474029541016|ENGB|
+|4|0.03268170356750488|0.026362895965576172|DE|
+|4|0.03748941421508789|0.007405281066894531|ENGB|
+|5|0.031110286712646484|0.028514862060546875|DE|
+|5|0.04486250877380371|0.008373737335205078|ENGB|
+|6|0.025351762771606445|0.022911901473999023|DE|   
+|6|0.06084442138671875|0.007311105728149414|ENGB| 
+
+
+Retrive shortest path between two nodes
+|NoOfWorkers|GraphClass time (s)|GraphFrame time (s)|Dataset|
+|---|---|---|---|
+|2|0.10671496391296387|16.647297143936157|DE|
+|2|0.03432583808898926|1.4732680320739746|ENGB|
+|3|0.10739398002624512|13.46754503250122|DE|
+|3|0.0544133186340332|2.318774461746216|ENGB|
+|4|0.10797381401062012|14.898767232894897|DE|
+|4|0.04219651222229004|1.8270833492279053|ENGB|
+|5|0.10746145248413086|14.523574590682983|DE|
+|5|0.059081315994262695|1.786609172821045|ENGB|
+|6|0.10418510437011719|11.544317722320557|DE|
+|6|0.05588173866271973|2.6014223098754883|ENGB|
 
 
 ## References
