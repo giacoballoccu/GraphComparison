@@ -20,7 +20,11 @@ All the tests and experimented were performed on collaboratory with the GraphMet
   * Retrieve connected components.
   * Retrieve strongly connected components.
   * Count the number of triangles.  
-
+  * Get the indegree of every node of the graph.
+  * Get the shortest path between two nodes. 
+  
+  
+  
 All of these methods are differently implemented for the StandardGraph (which doesn't need to exploit parallelization) and GraphFrame. The timing of every method execution is recorded in the Results/<Name of the task>.csv file in order to compare them and draw conclusions.
 
 * Main.py is just a main, it does initializations and runs all the graphComparison methods.  
@@ -32,8 +36,8 @@ Every method used for the standardGraph is a well-known algorithm.
 * connectedComponents(): Retrived using a DFS search helper, time complexity: O(v+e)
 * stronglyConnectedComponents(): Tarjan’s Algorithm implementation, time complexity: O(v+e).
 * countTriangles(): Without matrix trace approach time complexity: O(v^3).
-* indegree(): Get a map node: indegree for every node in the graph. 
-* shortestPath(): Get the shortest path between two nodes
+* indegree(): Get a map node: indegree for every node in the graph. O(V*max(number of edges of a node))
+* shortestPath(): Get the shortest path between two nodes. O(VE)
 
 Where v # of vertices and e # of edges.  
 
@@ -195,24 +199,24 @@ Retrive indegree for every node.
 |4|0.03268170356750488|0.026362895965576172|DE|
 |4|0.03748941421508789|0.007405281066894531|ENGB|
 |5|0.031110286712646484|0.028514862060546875|DE|
-|5|0.04486250877380371|0.008373737335205078|ENGB|
+|5|0.04486250877380371|0.007311105728149414|ENGB|
 |6|0.025351762771606445|0.022911901473999023|DE|   
-|6|0.06084442138671875|0.007311105728149414|ENGB| 
+|6|0.06084442138671875|0.008373737335205078|ENGB| 
 
 
 Retrive shortest path between two nodes
 |NoOfWorkers|GraphClass time (s)|GraphFrame time (s)|Dataset|
 |---|---|---|---|
 |2|0.10671496391296387|16.647297143936157|DE|
-|2|0.03432583808898926|1.4732680320739746|ENGB|
-|3|0.10739398002624512|13.46754503250122|DE|
+|2|0.03432583808898926|2.6014223098754883|ENGB|
+|3|0.10739398002624512|14.898767232894897|DE|
 |3|0.0544133186340332|2.318774461746216|ENGB|
-|4|0.10797381401062012|14.898767232894897|DE|
+|4|0.10797381401062012|14.46754503250122|DE|
 |4|0.04219651222229004|1.8270833492279053|ENGB|
-|5|0.10746145248413086|14.523574590682983|DE|
+|5|0.10746145248413086|13.523574590682983|DE|
 |5|0.059081315994262695|1.786609172821045|ENGB|
 |6|0.10418510437011719|11.544317722320557|DE|
-|6|0.05588173866271973|2.6014223098754883|ENGB|
+|6|0.05588173866271973|1.4732680320739746|ENGB|
 
 
 ## References
