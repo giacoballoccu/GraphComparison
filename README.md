@@ -83,7 +83,7 @@ Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ fo
  ```
 ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/GraphComparison.pem ubuntu@<PUBLIC DNS>
  ```
-If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.
+If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.   
 9. Connect to the master and execute (one by one):
  ```
 cp Jars/graphframes-0.8.1-spark3.0-s_2.12.jar /opt/spark-3.0.2-bin-hadoop2.7/jars/graphframes-0.8.1-spark3.0-s_2.12.jar
