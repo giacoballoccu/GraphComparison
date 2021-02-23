@@ -62,7 +62,7 @@ amz_key_path="GraphComparison.pem"
 **Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 6 datanode and with an instance type of m5.xlarge.
 
 3. Download the files from this repository
-4. Put the files of this repository into the "app" terraform project folder (e.g. example.py should be in spark-terraform-master/app/main.py and so on for all the other files)
+4. Put the files of this repository into the "app" terraform project folder (e.g. main.py should be in spark-terraform-master/app/main.py and so on for all the other files)
 5. Open a terminal and generate a new ssh-key
 ```
 ssh-keygen -f <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/localkey
@@ -79,7 +79,7 @@ Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ fo
  After a while (wait!) it should print some public DNS in a green color, these are the public dns of your instances.
  It can happen that the command doesn't work (with an error like "Connection timeout"), usually it can be solved by doing a `terraform destroy` and re-do the `terraform apply`.
 
-8. Connect via ssh to all your instances via
+8. You can now connect via ssh to all your instances with the command
  ```
 ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/GraphComparison.pem ubuntu@<PUBLIC DNS>
  ```
