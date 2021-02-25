@@ -14,12 +14,12 @@ def main():
     nodes_path = "Dataset/twitch/DE/musae_DE_target.csv"
     dataset_name = edge_path.split("/")[2]
     findspark.init()
-    SUBMIT_ARGS = "--packages graphframes:graphframes:0.8.1-spark2.4-s_2.12 pyspark-shell"
+    SUBMIT_ARGS = "--packages graphframes:graphframes:0.8.1-spark3.0-s_2.12 pyspark-shell"
     os.environ["PYSPARK_SUBMIT_ARGS"] = SUBMIT_ARGS
     conf = pyspark.SparkConf()
     sc = pyspark.SparkContext(conf=conf)
     ss = SparkSession(sc)
-    ss._jsc.addJar("Jars/graphframes-0.8.1-spark2.4-s_2.12.jar")
+    ss._jsc.addJar("Jars/graphframes-0.8.1-spark3.0-s_2.12.jar")
     sc.setCheckpointDir('checkpoints')
     print(sc._conf.getAll())
 
