@@ -91,7 +91,7 @@ ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/amzkey.pem ubuntu@<PUBLI
 If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.   
 9. Connect to the master and execute (one by one):
  ```
-cp Jars/graphframes-0.8.1-spark3.0-s_2.12.jar /opt/spark-3.0.2-bin-hadoop2.7/jars/graphframes-0.8.1-spark3.0-s_2.12.jar
+cp Jars/graphframes-0.8.1-spark2.4-s_2.12.jar /opt/spark-2.4.7-bin-hadoop2.7/jars/graphframes-0.8.1-spark2.4-s_2.12.jar
 $HADOOP_HOME/sbin/start-dfs.sh
 $HADOOP_HOME/sbin/start-yarn.sh
 $HADOOP_HOME/sbin/mr-jobhistory-daemon.sh start historyserver
@@ -101,7 +101,7 @@ $SPARK_HOME/sbin/start-slaves.sh spark://s01:7077
 
 10. You are ready to execute GraphComparison! Execute this command on the master
 ```
-/opt/spark-3.0.2-bin-hadoop2.7/bin/spark-submit --master spark://s01:7077  --executor-cores 4 --executor-memory 14g main.py
+/opt/spark-2.4.7-bin-hadoop2.7/bin/spark-submit --master spark://s01:7077  --executor-cores 4 --executor-memory 14g main.py
 ```
 Note: if you use a machine which has less resources you need to adjust this command parameters.
 
