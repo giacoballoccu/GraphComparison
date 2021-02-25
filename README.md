@@ -56,9 +56,8 @@ You can find more about the implementation, results, and conclusions in the Grap
 access_key="<YOUR AWS ACCESS KEY>"
 secret_key="<YOUR AWS SECRET KEY>"
 token="<YOUR AWS TOKEN>"
-aws_key_name="GraphComparison"
-amz_key_path="GraphComparison.pem"
 ```
+Substitute the values inside <> with your aws access key, secret key and aws token. If you are using amazon educate you can retrive your values in the page of vocareum clicking on the button "account details" under the voice amazon CLI. If you are using the normal aws follow the guide on [AWS DOCS](https://aws.amazon.com/it/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/) in the paragraph called "Generate access keys for programmatic access".
 **Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 6 datanode and with an instance type of m5.xlarge.
 
 3. Download the files from this repository
@@ -69,7 +68,7 @@ ssh-keygen -f <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/localkey
 ```
 Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ folder (e.g. /home/user/)
 
-6. Login to AWS and create a key pair named **GraphComparison** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.
+6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.
 
 7. Open a terminal and go to the spark-terraform-master/ folder, execute the command
  ```
@@ -81,7 +80,7 @@ Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ fo
 
 8. You can now connect via ssh to all your instances with the command
  ```
-ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/GraphComparison.pem ubuntu@<PUBLIC DNS>
+ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/amzkey.pem ubuntu@<PUBLIC DNS>
  ```
 If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.   
 9. Connect to the master and execute (one by one):
