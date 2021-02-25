@@ -48,8 +48,8 @@ Regarding the AWS setup, it has been done using Terraform and using a good proje
 
 You can find more about the implementation, results, and conclusions in the GraphComparisonReport.pdf file.
 ## Initialize project in your machine
-0. Download and install Terraform
-1. Download the terraform project from [3] and unzip it
+0. Download Terraform from [their website](https://www.terraform.io/downloads.html) and install on your machine. 
+1. Download the terraform project from [here](https://github.com/giacoballoccu/spark-terraform) and unzip it
 2. Open the terraform project folder "spark-terraform-master/"
 3. Create a file named "terraform.tfvars" and paste this:
 ```
