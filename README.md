@@ -49,32 +49,35 @@ Regarding the AWS setup, it has been done using Terraform and using a good proje
 You can find more about the implementation, results, and conclusions in the GraphComparisonReport.pdf file.
 ## Initialize project in your machine
 0. Download Terraform from [their website](https://www.terraform.io/downloads.html) and install on your machine. 
-1. Download the terraform project from [here](https://github.com/giacoballoccu/spark-terraform) and unzip it
-2. Open the terraform project folder "spark-terraform-master/"
+1. Download the terraform project from [here](https://github.com/giacoballoccu/spark-terraform) and unzip it.
+2. Enter in the folder "spark-terraform-master/" you have just extracted.
 3. Create a file named "terraform.tfvars" and paste this:
 ```
 access_key="<YOUR AWS ACCESS KEY>"
 secret_key="<YOUR AWS SECRET KEY>"
 token="<YOUR AWS TOKEN>"
 ```
-Substitute the values inside <> with your aws access key, secret key and aws token. If you are using amazon educate you can retrive your values in the page of vocareum clicking on the button "account details" under the voice amazon CLI. If you are using the normal aws follow the guide on [AWS DOCS](https://aws.amazon.com/it/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/) in the paragraph called "Generate access keys for programmatic access".
+Substitute the values inside <> with your aws access key, secret key and aws token. If you are using amazon educate you can retrive your values in the vocareum page you get after having logged in by clicking on the button "account details" under the voice "amazon CLI". If you are using the normal aws please follow the guide on [AWS DOCS](https://aws.amazon.com/it/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/) in the paragraph called "Generate access keys for programmatic access".  
 **Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 6 datanode and with an instance type of m5.xlarge.
 
-3. Download the files from this repository
-4. Put the files of this repository into the "app" terraform project folder (e.g. main.py should be in spark-terraform-master/app/main.py and so on for all the other files)
+3. Download THIS repository and unzip it.
+4. Take all the files inside the folder "GraphComparison-main" you have just downloaded and put all of them into the "app" terraform project folder (e.g. main.py should be in spark-terraform-master/app/main.py and so on for all the other files)
 5. Open a terminal and generate a new ssh-key
 ```
 ssh-keygen -f <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/localkey
 ```
 Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ folder (e.g. /home/user/)
 
-6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.
-
+6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.  Then execute this command to fix the permissions of the key:  
+```
+chmod 500 <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/amzkey.pem
+```
 7. Open a terminal and go to the spark-terraform-master/ folder, execute the command
  ```
  terraform init
  terraform apply
  ```
+ The terraform apply will show you the instances that are going to be created write yes to start the creation.  
  After a while (wait!) it should print some public DNS in a green color, these are the public dns of your instances.
  It can happen that the command doesn't work (with an error like "Connection timeout"), usually it can be solved by doing a `terraform destroy` and re-do the `terraform apply`.
 
@@ -112,7 +115,8 @@ Sometimes it happens that some iteration takes much more time than the others. T
 
 12. Remember to do `terraform destroy` to delete your EC2 instances
 
-**Note:** The steps from 0 to 7 (included) are needed only on the first execution ever
+**Note:** The steps from 0 to 7 (included) are needed only on the first execution ever.  
+
 ## Table of results
 Retrieve nodes that satisfy a particular query.
 |NoOfWorkers|GraphClass time (s)|GraphFrame time (s)|Dataset|
