@@ -57,7 +57,10 @@ access_key="<YOUR AWS ACCESS KEY>"
 secret_key="<YOUR AWS SECRET KEY>"
 token="<YOUR AWS TOKEN>"
 ```
-Substitute the values inside <> with your aws access key, secret key and aws token. If you are using amazon educate you can retrive your values in the vocareum page you get after having logged in by clicking on the button "account details" under the voice "amazon CLI". If you are using the normal aws please follow the guide on [AWS DOCS](https://aws.amazon.com/it/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/) in the paragraph called "Generate access keys for programmatic access".  
+Substitute the values inside the "" with your aws access key, secret key and aws token.   
+- If you are using amazon educate you can retrive your values in the vocareum page you get after having logged in by clicking on the button "account details" under the voice "amazon CLI". 
+- If you are using the normal aws please follow the guide on [AWS DOCS](https://aws.amazon.com/it/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/) in the paragraph called "Generate access keys for programmatic access".   
+
 **Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 6 datanode and with an instance type of m5.xlarge.
 
 3. Download THIS repository and unzip it.
