@@ -20,7 +20,11 @@ All the tests and experimented were performed on collaboratory with the GraphMet
   * Retrieve connected components.
   * Retrieve strongly connected components.
   * Count the number of triangles.  
-
+  * Get the indegree of every node of the graph.
+  * Get the shortest path between two nodes. 
+  
+  
+  
 All of these methods are differently implemented for the StandardGraph (which doesn't need to exploit parallelization) and GraphFrame. The timing of every method execution is recorded in the Results/<Name of the task>.csv file in order to compare them and draw conclusions.
 
 * Main.py is just a main, it does initializations and runs all the graphComparison methods.  
@@ -32,8 +36,8 @@ Every method used for the standardGraph is a well-known algorithm.
 * connectedComponents(): Retrived using a DFS search helper, time complexity: O(v+e)
 * stronglyConnectedComponents(): Tarjan’s Algorithm implementation, time complexity: O(v+e).
 * countTriangles(): Without matrix trace approach time complexity: O(v^3).
-* indegree(): Get a map node: indegree for every node in the graph. 
-* shortestPath(): Get the shortest path between two nodes
+* indegree(): Get a map node: indegree for every node in the graph. O(V*max(number of edges of a node))
+* shortestPath(): Get the shortest path between two nodes. O(VE)
 
 Where v # of vertices and e # of edges.  
 
@@ -44,28 +48,27 @@ Regarding the AWS setup, it has been done using Terraform and using a good proje
 
 You can find more about the implementation, results, and conclusions in the GraphComparisonReport.pdf file.
 ## Initialize project in your machine
-0. Download and install Terraform
-1. Download the terraform project from [3] and unzip it
+0. Download Terraform from [their website](https://www.terraform.io/downloads.html) and install on your machine. 
+1. Download the terraform project from [here](https://github.com/giacoballoccu/spark-terraform) and unzip it
 2. Open the terraform project folder "spark-terraform-master/"
 3. Create a file named "terraform.tfvars" and paste this:
 ```
 access_key="<YOUR AWS ACCESS KEY>"
 secret_key="<YOUR AWS SECRET KEY>"
 token="<YOUR AWS TOKEN>"
-aws_key_name="GraphComparison"
-amz_key_path="GraphComparison.pem"
 ```
+Substitute the values inside <> with your aws access key, secret key and aws token. If you are using amazon educate you can retrive your values in the page of vocareum clicking on the button "account details" under the voice amazon CLI. If you are using the normal aws follow the guide on [AWS DOCS](https://aws.amazon.com/it/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/) in the paragraph called "Generate access keys for programmatic access".
 **Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 6 datanode and with an instance type of m5.xlarge.
 
 3. Download the files from this repository
-4. Put the files of this repository into the "app" terraform project folder (e.g. example.py should be in spark-terraform-master/app/main.py and so on for all the other files)
+4. Put the files of this repository into the "app" terraform project folder (e.g. main.py should be in spark-terraform-master/app/main.py and so on for all the other files)
 5. Open a terminal and generate a new ssh-key
 ```
 ssh-keygen -f <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/localkey
 ```
 Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ folder (e.g. /home/user/)
 
-6. Login to AWS and create a key pair named **GraphComparison** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.
+6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.
 
 7. Open a terminal and go to the spark-terraform-master/ folder, execute the command
  ```
@@ -75,11 +78,11 @@ Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ fo
  After a while (wait!) it should print some public DNS in a green color, these are the public dns of your instances.
  It can happen that the command doesn't work (with an error like "Connection timeout"), usually it can be solved by doing a `terraform destroy` and re-do the `terraform apply`.
 
-8. Connect via ssh to all your instances via
+8. You can now connect via ssh to all your instances with the command
  ```
-ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/GraphComparison.pem ubuntu@<PUBLIC DNS>
+ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/amzkey.pem ubuntu@<PUBLIC DNS>
  ```
-If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.
+If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.   
 9. Connect to the master and execute (one by one):
  ```
 cp Jars/graphframes-0.8.1-spark3.0-s_2.12.jar /opt/spark-3.0.2-bin-hadoop2.7/jars/graphframes-0.8.1-spark3.0-s_2.12.jar
@@ -188,31 +191,31 @@ Retrive indegree for every node.
 
 |NoOfWorkers|GraphClass time (s)|GraphFrame time (s)|Dataset|
 |---|---|---|---|
-|2|0.04516458511352539|0.027668787002563477|DE|
-|2|0.03279376029968262|0.007115602493286133|ENGB|
+|2|0.04516458511352539|0.032668787002563477|DE|
+|2|0.03279376029968262|0.008373737335205078|ENGB|
 |3|0.025552749633789062|0.02932000160217285|DE|
-|3|0.04047727584838867|0.0064394474029541016|ENGB|
+|3|0.04047727584838867|0.007405281066894531|ENGB|
 |4|0.03268170356750488|0.026362895965576172|DE|
-|4|0.03748941421508789|0.007405281066894531|ENGB|
+|4|0.03748941421508789|0.007115602493286133|ENGB|
 |5|0.031110286712646484|0.028514862060546875|DE|
-|5|0.04486250877380371|0.008373737335205078|ENGB|
+|5|0.04486250877380371|0.007311105728149414|ENGB|
 |6|0.025351762771606445|0.022911901473999023|DE|   
-|6|0.06084442138671875|0.007311105728149414|ENGB| 
+|6|0.06084442138671875|0.0064394474029541016|ENGB| 
 
 
 Retrive shortest path between two nodes
 |NoOfWorkers|GraphClass time (s)|GraphFrame time (s)|Dataset|
 |---|---|---|---|
 |2|0.10671496391296387|16.647297143936157|DE|
-|2|0.03432583808898926|1.4732680320739746|ENGB|
-|3|0.10739398002624512|13.46754503250122|DE|
+|2|0.03432583808898926|2.6014223098754883|ENGB|
+|3|0.10739398002624512|14.898767232894897|DE|
 |3|0.0544133186340332|2.318774461746216|ENGB|
-|4|0.10797381401062012|14.898767232894897|DE|
+|4|0.10797381401062012|14.46754503250122|DE|
 |4|0.04219651222229004|1.8270833492279053|ENGB|
-|5|0.10746145248413086|14.523574590682983|DE|
+|5|0.10746145248413086|13.523574590682983|DE|
 |5|0.059081315994262695|1.786609172821045|ENGB|
 |6|0.10418510437011719|11.544317722320557|DE|
-|6|0.05588173866271973|2.6014223098754883|ENGB|
+|6|0.05588173866271973|1.4732680320739746|ENGB|
 
 
 ## References
