@@ -65,16 +65,16 @@ Substitute the values inside the "" with your aws access key, secret key and aws
 
 3. Download THIS repository and unzip it. (Scroll up the page, press the button code->download rar)
 4. Take all the files inside the folder "GraphComparison-main" you have just downloaded and put all of them into the "app" folder which is inside the spark-terraform-master folder you have downloaded in step 1. (e.g. main.py should be in spark-terraform-master/app/main.py and so on for all the other files)
-5. Open a terminal inside the /spark-terraform-master/ folder and generate a new ssh-key
+5. Open a terminal inside the /spark-terraform-master/ folder and generate a new ssh-key with an empty passphrase
 ```
 ssh-keygen -f localkey
 ```
 
-6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder. With a terminal located in the spark-terraform-master/ folder execute this command to fix the permissions of the key:  
+6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder. With the same terminal of step 5 (located in the spark-terraform-master/ folder) execute this command to fix the permissions of the key:  
 ```
 chmod 500 amzkey.pem
 ```
-7. With the same terminal from the spark-terraform-master/ folder, execute the commands
+7. With the same terminal of step 5/6 (located in the spark-terraform-master/ folder), execute the commands
  ```
  terraform init
  terraform apply
