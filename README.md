@@ -70,11 +70,11 @@ Substitute the values inside the "" with your aws access key, secret key and aws
 ssh-keygen -f localkey
 ```
 
-6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.  Then execute this command to fix the permissions of the key:  
+6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder. With a terminal located in the spark-terraform-master/ folder execute this command to fix the permissions of the key:  
 ```
-chmod 500 <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/amzkey.pem
+chmod 500 amzkey.pem
 ```
-7. Open a terminal and go to the spark-terraform-master/ folder, execute the command
+7. With the same terminal from the spark-terraform-master/ folder, execute the commands
  ```
  terraform init
  terraform apply
