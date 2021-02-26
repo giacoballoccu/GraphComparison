@@ -64,12 +64,11 @@ Substitute the values inside the "" with your aws access key, secret key and aws
 **Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 6 datanode and with an instance type of m5.xlarge.
 
 3. Download THIS repository and unzip it. (Scroll up the page, press the button code->download rar)
-4. Take all the files inside the folder "GraphComparison-main" you have just downloaded and put all of them into the "app" terraform project folder (e.g. main.py should be in spark-terraform-master/app/main.py and so on for all the other files)
-5. Open a terminal and generate a new ssh-key
+4. Take all the files inside the folder "GraphComparison-main" you have just downloaded and put all of them into the "app" folder which is inside the spark-terraform-master folder you have downloaded in step 1. (e.g. main.py should be in spark-terraform-master/app/main.py and so on for all the other files)
+5. Open a terminal inside the /spark-terraform-master/ folder and generate a new ssh-key
 ```
-ssh-keygen -f <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/localkey
+ssh-keygen -f localkey
 ```
-Where `<PATH_TO_SPARK_TERRAFORM>` is the path to the /spark-terraform-master/ folder (e.g. /home/user/)
 
 6. Login to AWS and create a key pair named **amzkey** in **PEM** file format. Follow the guide on [AWS DOCS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair). Download the key and put it in the spark-terraform-master/ folder.  Then execute this command to fix the permissions of the key:  
 ```
