@@ -49,7 +49,7 @@ Regarding the AWS setup, it has been done using Terraform and using a good proje
 You can find more about the implementation, results, and conclusions in the GraphComparisonReport.pdf file.
 ## Initialize project in your machine
 0. Download Terraform from [their website](https://www.terraform.io/downloads.html) and install on your machine. 
-1. Download the terraform project from [here](https://github.com/giacoballoccu/spark-terraform) and unzip it.
+1. Download the terraform project from [here](https://github.com/giacoballoccu/spark-terraform) and unzip it. (Go on the repository, press the button code->download rar)
 2. Enter in the folder "spark-terraform-master/" you have just extracted.
 3. Create a file named "terraform.tfvars" and paste this:
 ```
@@ -63,7 +63,7 @@ Substitute the values inside the "" with your aws access key, secret key and aws
 
 **Note:** without setting the other variables (you can find it on variables.tf), terraform will create a cluster on the region "us-east-1", with 1 namenode, 6 datanode and with an instance type of m5.xlarge.
 
-3. Download THIS repository and unzip it.
+3. Download THIS repository and unzip it. (Scroll up the page, press the button code->download rar)
 4. Take all the files inside the folder "GraphComparison-main" you have just downloaded and put all of them into the "app" terraform project folder (e.g. main.py should be in spark-terraform-master/app/main.py and so on for all the other files)
 5. Open a terminal and generate a new ssh-key
 ```
