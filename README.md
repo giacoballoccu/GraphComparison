@@ -74,7 +74,12 @@ ssh-keygen -f localkey
 ```
 chmod 500 amzkey.pem
 ```
-7. With the same terminal of step 5/6 (located in the spark-terraform-master/ folder), execute the commands
+7. From your aws account on the voice EC2->Network Interface->Create a network interface create a new subnet selecting as subnet us-east-1a. After the creation you can see the subnet id you have created and copy that id.  
+Open then file main.tf located in the spark-terraform-master/ folder with a text editor and in line 109 and 41 substitute the subnet_id with your subnet id
+ ```
+ subnet_id = "INSERT YOUR SUBNET_ID HERE"
+ ```
+8. With the same terminal of step 5/6 (located in the spark-terraform-master/ folder), execute the commands
  ```
  terraform init
  terraform apply
@@ -83,12 +88,12 @@ chmod 500 amzkey.pem
  After a while (wait!) it should print some public DNS in a green color, these are the public dns of your instances.
  It can happen that the command doesn't work (with an error like "Connection timeout"), usually it can be solved by doing a `terraform destroy` and re-do the `terraform apply`.
 
-8. You can now connect via ssh to all your instances with the command
+9. You can now connect via ssh to all your instances with the command
  ```
 ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/amzkey.pem ubuntu@<PUBLIC DNS>
  ```
 If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.   
-9. Connect to the master and execute (one by one):
+10. Connect to the master and execute (one by one):
  ```
 cp Jars/graphframes-0.8.1-spark3.0-s_2.12.jar /opt/spark-3.0.1-bin-hadoop2.7/jars/graphframes-0.8.1-spark3.0-s_2.12.jar
 $HADOOP_HOME/sbin/start-dfs.sh
@@ -98,13 +103,13 @@ $SPARK_HOME/sbin/start-master.sh
 $SPARK_HOME/sbin/start-slaves.sh spark://s01:7077
  ```
 
-10. You are ready to execute GraphComparison! Execute this command on the master
+11. You are ready to execute GraphComparison! Execute this command on the master
 ```
 /opt/spark-3.0.1-bin-hadoop2.7/bin/spark-submit --master spark://s01:7077  --executor-cores 4 --executor-memory 14g main.py
 ```
 Note: if you use a machine which has less resources you need to adjust this command parameters.
 
-10a. Common error in this phase.  
+11a. Common error in this phase.  
 Based on what machine you chose you will be able to change the number of cores used and the amount of RAM allocated for the tasks. If you would like to use a dataset different from the ENGB pay attention to the output of this command; if you get this warn message:
 ```
 WARN scheduler.TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
