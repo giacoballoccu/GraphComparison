@@ -74,12 +74,13 @@ ssh-keygen -f localkey
 ```
 chmod 500 amzkey.pem
 ```
-7. From your aws account on the voice EC2->Network Interface->Create a network interface create a new subnet selecting as subnet us-east-1a. After the creation you can see the subnet id you have created and copy that id.  
+7. Go to EC2->Security Group and make sure you don't have already a group called Hadoop_cluster_sc if you have, delete it.
+8. From your aws account on the voice EC2->Network Interface->Create a network interface create a new subnet selecting as subnet us-east-1a. After the creation you can see the subnet id you have created and copy that id.  
 Open then file main.tf located in the spark-terraform-master/ folder with a text editor and in line 109 and 41 substitute the subnet_id with your subnet id
  ```
  subnet_id = "INSERT YOUR SUBNET_ID HERE"
  ```
-8. With the same terminal of step 5/6 (located in the spark-terraform-master/ folder), execute the commands
+9. With the same terminal of step 5/6 (located in the spark-terraform-master/ folder), execute the commands
  ```
  terraform init
  terraform apply
@@ -88,12 +89,12 @@ Open then file main.tf located in the spark-terraform-master/ folder with a text
  After a while (wait!) it should print some public DNS in a green color, these are the public dns of your instances.
  It can happen that the command doesn't work (with an error like "Connection timeout"), usually it can be solved by doing a `terraform destroy` and re-do the `terraform apply`.
 
-9. You can now connect via ssh to all your instances with the command
+10. You can now connect via ssh to all your instances with the command
  ```
 ssh -i <PATH_TO_SPARK_TERRAFORM>/spark-terraform-master/amzkey.pem ubuntu@<PUBLIC DNS>
  ```
 If Terraform for some reason didn't print the DNS of the nodes you can find the public dns of the master as the node s01 in your aws console.   
-10. Connect to the master and execute (one by one):
+11. Connect to the master and execute (one by one):
  ```
 cp Jars/graphframes-0.8.1-spark3.0-s_2.12.jar /opt/spark-3.0.1-bin-hadoop2.7/jars/graphframes-0.8.1-spark3.0-s_2.12.jar
 $HADOOP_HOME/sbin/start-dfs.sh
@@ -103,13 +104,13 @@ $SPARK_HOME/sbin/start-master.sh
 $SPARK_HOME/sbin/start-slaves.sh spark://s01:7077
  ```
 
-11. You are ready to execute GraphComparison! Execute this command on the master
+12. You are ready to execute GraphComparison! Execute this command on the master
 ```
 /opt/spark-3.0.1-bin-hadoop2.7/bin/spark-submit --master spark://s01:7077  --executor-cores 4 --executor-memory 14g main.py
 ```
 Note: if you use a machine which has less resources you need to adjust this command parameters.
 
-11a. Common error in this phase.  
+12a. Common error in this phase.  
 Based on what machine you chose you will be able to change the number of cores used and the amount of RAM allocated for the tasks. If you would like to use a dataset different from the ENGB pay attention to the output of this command; if you get this warn message:
 ```
 WARN scheduler.TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
@@ -120,7 +121,7 @@ That means that you have allocated an insufficient amount of resources or other 
 ```
 Sometimes it happens that some iteration takes much more time than the others. The causes could be 1) in the install-all.sh there are more workers defined than the real number of workers (e.g. if we are using 2 workers, we need to delete s04, s05 and s06 from lines 166 and 204 of install-all.sh) 2) aws is throttling the resources of the instances. We usually resolve these problems by destroying the instances and waiting some time before re-running them.
 
-12. Remember to do `terraform destroy` to delete your EC2 instances
+13. Remember to do `terraform destroy` to delete your EC2 instances
 
 **Note:** The steps from 0 to 7 (included) are needed only on the first execution ever.  
 
