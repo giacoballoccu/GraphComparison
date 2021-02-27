@@ -74,7 +74,7 @@ ssh-keygen -f localkey
 ```
 chmod 500 amzkey.pem
 ```
-7. Go to EC2->Security Group and make sure you don't have already a group called Hadoop_cluster_sc if you have, delete it.
+7. Go to EC2->Security Group and make sure you don't have already a group called "Hadoop_cluster_sc" if you have, delete it.
 8. From your aws account on the voice EC2->Network Interface->Create a network interface create a new subnet selecting as subnet us-east-1a. After the creation you can see the subnet id you have created and copy that id.  
 Open then file main.tf located in the spark-terraform-master/ folder with a text editor and in line 109 and 41 substitute the subnet_id with your subnet id
  ```
