@@ -75,7 +75,8 @@ ssh-keygen -f localkey
 chmod 500 amzkey.pem
 ```
 7. Go to EC2->Security Group and make sure you don't have already a group called "Hadoop_cluster_sc" if you have, delete it.
-8. From your aws account on the voice EC2->Network Interface->Create a network interface create a new subnet selecting as subnet us-east-1a. Do the same thing with all the possibile subnets (us-east-1b, us-east-1c, us-east-1d). After the creation you can check from the subnet console which subnet has the ip ranges 172.31.80.* . After you find the subnet which is associated with those addresses you need to copy the subnet id of that subnet, then
+8. From your aws account on the voice EC2->Network Interface->Create a network interface create a new subnet selecting as subnet us-east-1a. Do the same thing with all the possibile subnets (us-east-1b, us-east-1c, us-east-1d). After the creation you can check from the subnet console which subnet has the ip ranges 172.31.80.*  
+After you find the subnet which is associated with those addresses you need to copy the subnet id of that subnet, then
 Open then file main.tf located in the spark-terraform-master/ folder with a text editor and in line 109 and 41 substitute the subnet_id with your subnet id (the one which has the ip ranges 172.31.80.*)
  ```
  subnet_id = "INSERT YOUR SUBNET_ID HERE"
